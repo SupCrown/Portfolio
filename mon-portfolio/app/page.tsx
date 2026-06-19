@@ -1,70 +1,137 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const [toast, setToast] = useState(false);
+
+  function showToast() {
+    setToast(true);
+    setTimeout(() => setToast(false), 2500);
+  }
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-50 selection:bg-indigo-500 selection:text-white">
-      
-      {/* --- BARRE DE NAVIGATION --- */}
-      <nav className="flex justify-between items-center px-8 py-6 max-w-5xl mx-auto">
-        <div className="text-xl font-bold tracking-tighter">
-          Ton<span className="text-indigo-500">Nom.</span>
-        </div>
-        <ul className="flex gap-6 text-sm font-medium text-neutral-400">
-          <li className="hover:text-white transition-colors"><Link href="/cv">CV</Link></li>
-          <li className="hover:text-white transition-colors"><Link href="/projets-ia">Projets IA</Link></li>
-          <li className="hover:text-white transition-colors"><Link href="/apps">Applications</Link></li>
-        </ul>
-      </nav>
+    <main className="min-h-screen text-neutral-50 py-12 px-6">
+      <div className="max-w-5xl mx-auto">
 
-      {/* --- SECTION ACCUEIL ANIMÉE --- */}
-      <section className="flex flex-col items-center justify-center pt-32 px-4 text-center">
-        
+        <motion.header
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-16 border-b border-neutral-800 pb-8"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 mb-4">
+            Projets IA
+          </h1>
+          <p className="text-lg text-neutral-400 max-w-2xl">
+            Expérimentations algorithmiques autour de l'apprentissage par renforcement (Q-Learning).
+          </p>
+        </motion.header>
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          <span className="px-3 py-1 text-sm font-semibold text-indigo-400 bg-indigo-500/10 rounded-full border border-indigo-500/20">
-            Développeur & Créateur IA
-          </span>
+
+          {/* CARTE 1 : FOURMIS JAVA (Q-LEARNING) */}
+          <motion.article variants={item} className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group">
+            <div className="relative w-full h-56 bg-neutral-950 overflow-hidden">
+              <video
+                src="/fourmis.webm"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity group-hover:scale-105 duration-500"
+              />
+              <div className="absolute top-3 right-3 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                Java / Q-Table / Swing
+              </div>
+            </div>
+
+            <div className="p-6">
+              <h3 className="text-2xl font-bold text-white mb-2">Simulation de Fourmis (IA)</h3>
+              <p className="text-neutral-400 text-sm mb-6">
+                Simulation visuelle d'une colonie de fourmis par apprentissage par renforcement (Q-learning). Les fourmis apprennent à optimiser leurs trajets de manière autonome.
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={showToast}
+                  className="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition-colors cursor-pointer"
+                >
+                  Dépôt Git
+                </button>
+                <button
+                  onClick={showToast}
+                  className="flex-1 text-center bg-neutral-800 hover:bg-neutral-700 text-white text-sm font-medium py-2 rounded-lg border border-neutral-700 transition-colors cursor-pointer"
+                >
+                  Détails
+                </button>
+              </div>
+            </div>
+          </motion.article>
+
+          {/* CARTE 2 : APPLICATION RUST */}
+          <motion.article variants={item} className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-colors group">
+            <div className="relative w-full h-56 bg-neutral-950 flex items-center justify-center overflow-hidden">
+              <span className="text-neutral-600 text-sm">Aperçu à venir</span>
+              <div className="absolute top-3 right-3 bg-cyan-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                Rust / Sockets
+              </div>
+            </div>
+
+            <div className="p-6">
+              <h3 className="text-2xl font-bold text-white mb-2">Application Rust</h3>
+              <p className="text-neutral-400 text-sm mb-6">
+                Application ultra-performante en Rust avec gestion rigoureuse de la mémoire et communication par sockets.
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={showToast}
+                  className="flex-1 text-center bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium py-2 rounded-lg transition-colors cursor-pointer"
+                >
+                  Dépôt Git
+                </button>
+                <button
+                  onClick={showToast}
+                  className="flex-1 text-center bg-neutral-800 hover:bg-neutral-700 text-white text-sm font-medium py-2 rounded-lg border border-neutral-700 transition-colors cursor-pointer"
+                >
+                  Détails
+                </button>
+              </div>
+            </div>
+          </motion.article>
+
         </motion.div>
+      </div>
 
-        <motion.h1 
-          className="mt-8 text-5xl md:text-7xl font-bold tracking-tight max-w-3xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Je conçois des applications <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">intelligentes</span> et modernes.
-        </motion.h1>
-
-        <motion.p 
-          className="mt-6 text-lg text-neutral-400 max-w-xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Découvrez mon parcours, mes expérimentations avec l'Intelligence Artificielle et les applications logicielles que j'ai développées.
-        </motion.p>
-
-        <motion.div 
-          className="mt-10 flex gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <Link href="/projets-ia" className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-all transform hover:scale-105">
-            Explorer l'IA
-          </Link>
-          <Link href="/apps" className="px-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg font-medium transition-all border border-neutral-700">
-            Voir mes Apps
-          </Link>
-        </motion.div>
-
-      </section>
+      {/* TOAST "À VENIR" */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-neutral-800 border border-neutral-700 text-white px-6 py-3 rounded-xl shadow-2xl text-sm font-medium"
+          >
+            🔒 À venir — dépôt bientôt disponible
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
